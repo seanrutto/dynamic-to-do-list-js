@@ -35,3 +35,50 @@ document.addEventListener('DOMContentLoaded', function(){
     addTask();
 
 })
+
+document.addEventListener('DOMContentLoaded', () => {
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    const taskList = document.getElementById('task-list');
+    const newTaskInput = document.getElementById('new-task');
+    const addTaskButton = document.getElementById('add-task');
+
+    const saveTasksToLocalStorage = () => {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    };
+
+    const loadTasksFromLocalStorage = () => {
+        tasks.forEach(task => {
+            addTaskToDOM(task);
+        });
+    };
+
+    const addTaskToDOM = (task) => {
+        const li = document.createElement('li');
+        li.className = 'task-item';
+        li.textContent = task;
+
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.addEventListener('click', () => {
+            taskList.removeChild(li);
+            tasks = tasks.filter(t => t !== task);
+            saveTasksToLocalStorage();
+        });
+
+        li.appendChild(removeButton);
+        taskList.appendChild(li);
+    };
+
+    addTaskButton.addEventListener('click', () => {
+        const task = newTaskInput.value.trim();
+        if (task) {
+            tasks.push(task);
+            addTaskToDOM(task);
+            saveTasksToLocalStorage();
+            newTaskInput.value = '';
+        }
+    });
+
+    loadTasksFromLocalStorage();
+});
