@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function(){
         listItem.textContent = taskText;
         const newBtn = document.createElement('button')
         newBtn.textContent = "Remove"
-        newBtn.className = 'remove-btn'
+        newBtn.classList.add('remove-btn');
         newBtn.onclick = function(){
             taskList.removeChild(listItem)
         }
